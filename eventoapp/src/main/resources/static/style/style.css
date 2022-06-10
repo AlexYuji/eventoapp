@@ -1,0 +1,30 @@
+.detalhesEvento {
+	box-shadow: 0px 0px 5px grey;
+	padding-top: 3px;
+	padding-left: 20px;
+	margin-bottom: 60px;
+}
+
+.detalhesConvidado{
+	box-shadow: 0px 0px 5px grey;
+	padding-top: 3px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+	margin-bottom: 60px;
+}
+
+.nomeLista{
+	text-align:center;
+}
+
+.tabelaConvidado{
+	width: 50%;
+}
+
+.formEvento{
+	box-shadow: 0px 0px 5px grey;
+	padding-top: 3px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+	margin-bottom: 60px;
+}
