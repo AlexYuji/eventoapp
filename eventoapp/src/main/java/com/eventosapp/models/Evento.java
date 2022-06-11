@@ -33,9 +33,15 @@ public class Evento implements Serializable{
 	@NotEmpty
 	private String horario;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Convidado> convidados;
 	
+	public List<Convidado> getConvidados() {
+		return convidados;
+	}
+	public void setConvidados(List<Convidado> convidados) {
+		this.convidados = convidados;
+	}
 	public long getCodigo() {
 		return codigo;
 	}
