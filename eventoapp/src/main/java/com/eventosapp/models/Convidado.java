@@ -12,7 +12,7 @@ public class Convidado {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long id;
+	private long id;
 	
 	@NotEmpty
 	private String rg;
