@@ -89,6 +89,7 @@ public class EventoController {
 		}
 		Evento evento = er.findByCodigo(codigo);
 		convidado.setEvento(evento);
+		attributes.addFlashAttribute("mensagem", "Convidado cadastrado com sucesso!");
 		cr.save(convidado);
 		return "redirect:/{codigo}";
 	}	
@@ -121,25 +122,27 @@ public class EventoController {
 	}
 	
 	@PostMapping("/convidados/{codigo}")
-	public ModelAndView update(@PathVariable("codigo") Long codigo, @Valid Convidado convidado, BindingResult result, RedirectAttributes attributes) {
-		ModelAndView mv = new ModelAndView();
-		Optional<Convidado> optional = cr.findById(codigo);	
-		Convidado optionalConvidado = null;
-		if(result.hasErrors() || codigo == null) {
-			mv = new ModelAndView("redirect:/convidados/");
-			mv.addObject("convidadoId", codigo);
-			mv.addObject("convidado", optionalConvidado = convidado.toConvidado(optional.get()));
-			attributes.addFlashAttribute("mensagem", "Ops... Algo deu errado! Verifique os Campos!");	
-			return mv;
-		} else if (optional.isPresent()){
-			optionalConvidado = convidado.toConvidado(optional.get());
-			cr.save(optionalConvidado);
-			mv = new ModelAndView("redirect:/" + optionalConvidado.getEvento().getCodigo());
-		}		
-			
-		return mv;
-	
-	}
+    public ModelAndView update(@PathVariable("codigo") Long codigoConvidado, @Valid Convidado newConvidado, BindingResult result, RedirectAttributes attributes) {
+        ModelAndView modelAndView = new ModelAndView();
+        if(result.hasErrors() || codigoConvidado == null) return modelAndViewError(modelAndView, codigoConvidado, attributes);
+        
+        Optional<Convidado> convidadoOptional = cr.findById(codigoConvidado);
+
+        if(convidadoOptional.isEmpty()) return modelAndViewError(modelAndView, codigoConvidado, attributes);
+
+        Convidado convidado = convidadoOptional.get();
+
+        cr.save(newConvidado.toConvidado(convidado));
+        modelAndView.setViewName("redirect:/" + convidado.getEvento().getCodigo());
+
+        return modelAndView;
+    }
+
+    private ModelAndView modelAndViewError(ModelAndView modelAndView, Long codigoConvidado, RedirectAttributes attributes) {
+        modelAndView.setViewName("redirect:/convidados/" + codigoConvidado + "/edit");
+        attributes.addFlashAttribute("mensagem", "Ops... Algo deu errado! Verifique os Campos!");
+        return modelAndView;
+    }
 			
 }
 	
