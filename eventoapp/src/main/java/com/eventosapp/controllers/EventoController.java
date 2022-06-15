@@ -2,13 +2,16 @@ package com.eventosapp.controllers;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -91,16 +94,53 @@ public class EventoController {
 	}	
 	
 	@RequestMapping("/deletarConvidado") 
-	public String deletarConvidado(String rg) {
-		Convidado convidado = cr.findByRg(rg);
+	public String deletarConvidado(long id) {
+		Convidado convidado = cr.findById(id);
 		cr.delete(convidado);
 		
-		Evento evento = convidado.getEvento();
+		Evento evento = convidado.getEvento();	
 		long codigoLong = evento.getCodigo();
 		String codigo = "" + codigoLong;
 		return "redirect:/" + codigo;			
 	}
+	
+	@GetMapping("/convidados/{codigo}/edit")
+	public ModelAndView edit(@PathVariable("codigo") Long codigo, Convidado convidado) {
+		Optional<Convidado> optional = cr.findById(codigo);
 		
+		if(optional.isPresent()) {
+			Convidado optionalConvidado = optional.get();
+			convidado.fromConvidado(optionalConvidado);
+			ModelAndView mv = new ModelAndView("convidado/edit");	
+			mv.addObject("convidadoId", optionalConvidado.getId());
+			mv.addObject("convidado", optionalConvidado);
+			return mv;
+		}
+		ModelAndView mv = new ModelAndView("/{codigo}");
+		return mv;
+	}
+	
+	@PostMapping("/convidados/{codigo}")
+	public ModelAndView update(@PathVariable("codigo") Long codigo, @Valid Convidado convidado, BindingResult result, RedirectAttributes attributes) {
+		ModelAndView mv = new ModelAndView();
+		Optional<Convidado> optional = cr.findById(codigo);	
+		Convidado optionalConvidado = null;
+		if(result.hasErrors() || codigo == null) {
+			mv = new ModelAndView("redirect:/convidados/");
+			mv.addObject("convidadoId", codigo);
+			mv.addObject("convidado", optionalConvidado = convidado.toConvidado(optional.get()));
+			attributes.addFlashAttribute("mensagem", "Ops... Algo deu errado! Verifique os Campos!");	
+			return mv;
+		} else if (optional.isPresent()){
+			optionalConvidado = convidado.toConvidado(optional.get());
+			cr.save(optionalConvidado);
+			mv = new ModelAndView("redirect:/" + optionalConvidado.getEvento().getCodigo());
+		}		
+			
+		return mv;
+	
+	}
+			
 }
 	
 

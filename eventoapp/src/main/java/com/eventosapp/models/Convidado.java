@@ -6,18 +6,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Convidado {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	@NotEmpty
+	@NotNull
 	private String rg;
 	
 	@NotEmpty
+	@NotNull
 	private String nomeConvidado;
 	
 	@ManyToOne
@@ -48,5 +51,16 @@ public class Convidado {
 		this.evento = evento;
 	}
 	
+	public void fromConvidado(Convidado convidado) {
+		this.nomeConvidado = convidado.getNomeConvidado();
+		this.rg = convidado.getRg();
+		this.evento = convidado.getEvento();
+	}
+	
+	public Convidado toConvidado(Convidado convidado) {
+		convidado.setNomeConvidado(nomeConvidado);
+		convidado.setRg(rg);
+		return convidado;
+	}
 	
 }

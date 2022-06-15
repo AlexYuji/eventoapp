@@ -62,6 +62,7 @@
 				<th>Nome do Convidado</th>
 				<th>RG</th>
 				<th>Deletar</th>
+				<th>Detalhes</th>
 			</tr>
 		</thead>
 		
@@ -69,7 +70,8 @@
 			<tr th:each="convidado : ${convidados}">
 				<td><span th:text="${convidado.NomeConvidado}"></span></td>
 				<td><span th:text="${convidado.rg}"></span></td>
-				<td><a th:href="${(#mvc.url('EC#deletarConvidado').arg(0, convidado.rg)).build()}" onclick="excluirConvidado()"><i class="material-icons left">delete</i></a></td>
+				<td><a th:href="${(#mvc.url('EC#deletarConvidado').arg(0, convidado.id)).build()}" onclick="excluirConvidado()"><i class="material-icons left">delete</i></a></td>
+				<td><a th:href="${(#mvc.url('EC#edit').arg(0, convidado.id)).build()}"><i class="material-icons left">edit</i></a></td>
 				
 			</tr>
 		</tbody>
