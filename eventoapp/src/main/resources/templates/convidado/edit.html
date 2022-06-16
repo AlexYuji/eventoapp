@@ -34,13 +34,26 @@
 		<div class="container dadosConvidado">
 			<form th:action="@{/convidados/{convidadoId}(convidadoId = ${convidadoId})}" method="post">
 				Nome: <input th:value="*{convidado.nomeConvidado}" type="text" value="" name="nomeConvidado" placeholder="Nome Completo"/>
-				Rg: <input th:value="*{convidado.rg}" type="text" value="" name="rg" placeholder="AA-00.000.000" class="validate">
+				Rg: <input th:value="*{convidado.rg}" type="text" value="" name="rg" id="rg" placeholder="00.000.000-0" class="validate">
 				<button class="waves-effect waves-light btn" type="submit">Salvar</button>
 			</form>		
 		</div>
-		
 	
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	
+    <script
+	 	 src="https://code.jquery.com/jquery-3.6.0.js"
+	  	 integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	  	 crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    
+	<script>
+		$(document).ready(function(){
+		  $('#rg').mask('99.999.999-9');
+		});
+	</script>
 	
 </body>
 </html>

@@ -8,13 +8,20 @@
 	<script>
 		function excluirConvidado() {
 			alert("Convidado Excluido com sucesso")
-		}
+		}		
 		
-		function cadastrarConvidado() {
-			alert("Convidado Cadastrado com sucesso")
+		function lettersOnly(evt) {
+		    evt = (evt) ? evt : event;
+		    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode : ((evt.which) ? evt.which : 0));
+		    if (charCode == 32)
+		        return true;
+		    if (charCode > 31 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
+		        return false;
+		    }
+		    else
+		        return true;
 		}
-		
-	</script>
+	</script>	
 	
 	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 
@@ -22,9 +29,16 @@
    
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       
+      <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+      
       <link rel="stylesheet" href="style/style.css"/>
       
       <script src="js/script.js defer"></script>
+      
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
       
 </head>
 <body>
@@ -54,8 +68,8 @@
 		<div class="container detalhesConvidado">
 			<h5><b>Formulario:</b></h5>
 			<form method="post">
-				Nome: <input type="text" value="" name="nomeConvidado" placeholder="Nome Completo"/>
-				Rg: <input type="text" value="" name="rg" placeholder="AA-00.000.000" class="validate">
+				Nome: <input type="text" value="" name="nomeConvidado" pattern="[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$" onkeypress="return lettersOnly(event)" placeholder="Nome Completo"/>
+				Rg: <input type="text" value="" name="rg" id="rg" pattern="(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="00.000.000-0" class="validate">
 				<button class="waves-effect waves-light btn" type="submit">Adicionar</button>
 			</form>		
 		</div>
@@ -84,6 +98,14 @@
 	</table>
 	
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	
+	<script type="text/javascript" src="js/jquery.mask.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mask.js"></script>
+	<script>
+		$(document).ready(function(){
+		  $('#rg').mask('99.999.999-9');
+		});
+	</script>
 	
 </body>
 </html>
