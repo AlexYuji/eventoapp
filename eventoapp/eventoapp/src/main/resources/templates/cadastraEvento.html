@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>EventosApp</title>
+
+		<script>
+			function deletarEvento() {
+				alert("Evento Excluido com sucesso")
+			}
+		</script>
+
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+		<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<link rel="stylesheet" href="style/style.css"/>
+
+		<script src="js/script.js defer"></script>
+      
+</head>
+<body>
+	<header>
+		<nav>
+   		  <div class="nav-wrapper">
+	      	<a href="#" class="brand-logo">Lista de Eventos</a>
+	      	<ul id="nav-mobile" class="right hide-on-med-and-down">
+		        <li><a href="/cadastrarEvento" class="waves-effect waves-light btn"><i class="material-icons left">add_circle_outline</i>Cadastrar Evento</a></li>
+     		</ul>
+   		  </div>
+  		</nav>
+	</header>
+	
+	<table id="table_id" class="display" style="width: 67.3%">
+		<thead>
+			<tr>
+				<th>Nome</th>	
+				<th>Local</th>	
+				<th>Data</th>	
+				<th>Horario</th>	
+				<th>Deletar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="evento : ${eventos}">
+				<td><a th:href="${(#mvc.url('EC#detalhesEvento').arg(0, evento.codigo)).build()}"><span th:text="${evento.nome}"></span></a></td>
+				<td><span th:text="${evento.local}"></span></td>
+				<td><span th:text="${evento.data}"></span></td>
+				<td><span th:text="${evento.horario}"></span></td>
+				<td><a th:href="${(#mvc.url('EC#deletarEvento').arg(0, evento.codigo)).build()}"><i class="material-icons left" onclick="deletarEvento()">delete</i></a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+	<script>
+		$(document).ready( function () {
+    	$('#table_id').DataTable({
+    		"language": {
+    			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+    		},
+    		"bFilter": false,
+    		"lengthChange": false,
+    		"iDisplayLength": 5,
+    		"ordering": false
+    	})
+		});
+	</script>
+	
+</body>
+</html>
