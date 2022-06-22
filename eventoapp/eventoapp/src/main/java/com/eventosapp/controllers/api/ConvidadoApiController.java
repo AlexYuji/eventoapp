@@ -58,10 +58,11 @@ public class ConvidadoApiController {
 	
 	@PutMapping("/{codigo}")
 	@ResponseBody
-	public ResponseEntity atualizarCliente(@PathVariable("codigo") Long codigo, @RequestBody Convidado convidado) {
+	public ResponseEntity atualizarConvidado(@PathVariable("codigo") Long codigo, @RequestBody Convidado convidado) {
 		return cr.findById(codigo).map(convidadoExistente -> {
 			convidado.setId(convidadoExistente.getId());
-			cr.save(convidado);
+			convidado.setEvento(convidadoExistente.getEvento());
+			cr.saveAndFlush(convidado);
 			return ResponseEntity.noContent().build();
 		}).orElseGet( () -> ResponseEntity.notFound().build());
 	}
