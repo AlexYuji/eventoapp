@@ -31,9 +31,10 @@ public class ConvidadoApiController {
 	private ConvidadoRepository cr;
 	
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Optional<Convidado>> listaConvidado(@PathVariable("codigo") Long codigo) {
-		Optional<Convidado> convidado = cr.findById(codigo);
-		if(convidado.isEmpty()) {
+	public ResponseEntity<Iterable<Convidado>> listaConvidado(@PathVariable("codigo") Long codigo) {
+		Evento evento = er.findByCodigo(codigo);
+		Iterable<Convidado> convidado = cr.findByEvento(evento);
+		if(convidado == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		return ResponseEntity.ok(convidado);
